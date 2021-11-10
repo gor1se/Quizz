@@ -1,0 +1,12 @@
+Wie soll die App funktionieren?
+
+Vorerst soll nach drücken eines Start Buttons ein Quizz beginnen indem die erste Frage erscheint.
+Man erhält neben der Frage n Antwortmöglichkeiten welche als Buttons aufgeschlüsselt werden.
+Nachdem man auf einen Button drückt wird diese Antwort gespeichert und die nächste Frage angezeigt.
+Unterhalb des Quiz soll eine Anzeige bekanntgeben wie weit man bereits fortgeschritten ist: 4/25
+Nachdem die letzte Frage beantwortet wurde wird das Ergebnis angezeigt.
+Außerdem sollen noch die Falschen Antworten abgefragt werden können.
+
+Später könnte man das Quiz noch um weitere Quizzes ergänzen.
+Oder einen Timer einbauen, der die Geschwindigkeit misst.
+

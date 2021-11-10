@@ -1,0 +1,36 @@
+Folgende Features könnten noch ergänzt werden:
+
+1. Backendprogrammierung mit richtiger Datenbank 
+Die Fragen werden nicht mehr auf der Website, sondern auf einer Datenbank gespeichert.
+Es wird verschiedene Frageräume geben, die auch von Nutzern erstellt werden können.
+Ein Frageraum benötigt mindestens drei Fragen und man erhält eine Raum-ID. (Wird über Formular erstellt).
+Man kann den Frageraum über den normalen Link gefolgt von der ID öffnen.
+Im Raum selbst hat man folgende Möglichkeiten:
+    1. Quizz machen:
+       Hier werden aus dem gesamten Frageraum des Pools eine bestimmte menge an Fragen zufällig herausgepickt.
+       Der Nutzer kann selbst entscheiden wie viele Fragen er beantworten möchte.
+    2. Fragen hinzufügen:
+       Der Nutzer hat auch die Möglichkeit eine Frage mitsamt richtiger Antwort zu formulieren.
+       Die Frage wird jedoch erst zum Fragepool hinzugefügt, sobald ausreichend reviews vorhanden sind.
+    3. Neue Fragen reviewen
+       Hierzu sollte ständig auch nach Ende des Quizz animiert werden. Nutzer können neu hinzugefügte Fragen reviewen und bewerten.
+       Sobald eine mindestanzahl an reviews erreicht ist und eine bestimmtes verhältnis davon positiv ist werden die Fragen an den normalen Pool übergeben.
+       Die Nutzer sollten beim erstellen des Raum darüber selbst entscheiden können, wieviele Reviews nötig sind und wieviele Bewertungen positiv sein müssen.
+
+Die Datenstruktur eines Quizz sieht also so aus:
+Quizz:
+    - Allgemeine Daten (Revieweinstellungen, Link od. Raum-ID, Erstelldatum, Aktivität, privat od. öffentlich, Bewertung, Mitglieder)
+    - Fragepool (Mindestens drei Fragen von beginn an)
+    - Reviewfragen (Von Nutzern eigenständig erstellt. Können defaultmäßig alle erstellen)
+
+2. Userinterface
+Das UI sollte möglichst schlicht gehalten werden. Jedoch könnte man folgende Features implementieren.
+Topliste mit den bestbewertetsten Räumen welche zugleich öffentlich sind.
+Suchmodus nach verschiedenen Themen. Beispiel Führerscheinprüfung Deutschland.
+
+3. Multimedialer Support
+Später könnte man noch weitere Features hinzufügen, beispielsweise support für Fotos oder andere Fragearten (Freie Antworten, Multiple Choice)
+
+4. Quizz Techniken
+In einer erweiterten Version des Quizz könnte man Profile der Nutzer erstllen und überprüfen, welche Fragen ein Nutzer bereits häufig richtig beantwortet hat 
+und welche nicht. Auch eine spaced repetition könnte man so umsetzen.
