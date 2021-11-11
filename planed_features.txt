@@ -19,7 +19,8 @@ Im Raum selbst hat man folgende Möglichkeiten:
 
 Die Datenstruktur eines Quizz sieht also so aus:
 Quizz:
-    - Allgemeine Daten (Revieweinstellungen, Link od. Raum-ID, Erstelldatum, Aktivität, privat od. öffentlich, Bewertung, Mitglieder)
+    - Allgemeine Daten (Revieweinstellungen, Link od. Raum-ID, Erstelldatum, Aktivität, privat od. öffentlich, Bewertung, Mitglieder, stats (total questions 
+    answered))
     - Fragepool (Mindestens drei Fragen von beginn an)
     - Reviewfragen (Von Nutzern eigenständig erstellt. Können defaultmäßig alle erstellen)
 
@@ -34,3 +35,7 @@ Später könnte man noch weitere Features hinzufügen, beispielsweise support f�
 4. Quizz Techniken
 In einer erweiterten Version des Quizz könnte man Profile der Nutzer erstllen und überprüfen, welche Fragen ein Nutzer bereits häufig richtig beantwortet hat 
 und welche nicht. Auch eine spaced repetition könnte man so umsetzen.
+
+5. Datenstruktur 
+Die Datenstruktur der Datenbank sieht folgendermaßen aus:
+Data(Object)->QuestionBlock(Object)->Questions(Array)->Question(Object)

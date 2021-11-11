@@ -10,3 +10,9 @@ Außerdem sollen noch die Falschen Antworten abgefragt werden können.
 Später könnte man das Quiz noch um weitere Quizzes ergänzen.
 Oder einen Timer einbauen, der die Geschwindigkeit misst.
 
+Wie soll das Routing auf dem Server funktionieren?
+- Vorerst kommt man in einen Anfangsraum, bei dem man eine RaumID eingeben kann um diesem Beizutreten
+- Nach dieser Eingabe kommt man auf einen Startbildschirm des Quiz bei dem man die gewünschte Fragemenge eingeben kann 
+- In der Navleiste hat man außerdem die Möglichkeit einen neuen Raum zu erstellen 
+- Wenn man einen Raum öffnet wird dabei automatisch von der get-Methode das JSON Objekt an die run-Datai mit übergeben.
+- Ein weiteres Mal kommuniziert das Backend und Frontend bei der abgabe des Quiz
