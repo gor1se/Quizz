@@ -1,0 +1,44 @@
+<%- include('header'); -%>
+
+    <h1>Erstellen Sie hier einen neuen Raum!</h1>
+
+    <form action="#" method="post">
+        <div id="form-content">
+            <hr>
+            <label for="room_name">Room Name</label>
+            <input type="text" name="" id="room_name">
+            <br>
+            <label for="room_password">Room Password</label>
+            <input type="password" name="" id="room_password">
+            <hr>
+            <h3>Question 1</h3>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Question"></textarea>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Answeroption"></textarea>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Answeroption"></textarea>
+            <br>
+            <button class="btn btn-success">+</button>
+            <hr>
+            <h3>Question 2</h3>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Question"></textarea>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Answeroption"></textarea>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Answeroption"></textarea>
+            <br>
+            <button class="btn btn-success">+</button>
+            <hr>
+            <h3>Question 3</h3>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Question"></textarea>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Answeroption"></textarea>
+            <textarea name="" id="question_text" cols="100" rows="1" placeholder="Answeroption"></textarea>
+            <br>
+            <button class="btn btn-success">+</button>
+            <hr>
+            <button class="btn btn-success">Add Question</button>
+            <button class="btn btn-danger">Remove Question</button>
+            <hr>
+            <button class="btn btn-success">Create Room</button>
+
+
+        </div>
+    </form>
+
+    <%- include('footer'); -%>

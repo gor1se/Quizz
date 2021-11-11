@@ -1,6 +1,7 @@
 let express = require('express');
 let ejs = require('ejs');
 var jsdom = require('jsdom'); // Wird für JQuery benötigt
+const { red } = require('color-name');
 $ = require('jquery')(new jsdom.JSDOM().window);
 
 const port = 3000;
@@ -9,7 +10,11 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static('public'))
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.render('index');
+});
+
+app.get('/new-room', (req, res) => {
+    res.render('new_room');
 });
 
 app.listen(port, () => {
