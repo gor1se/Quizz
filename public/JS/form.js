@@ -16,13 +16,16 @@ let form_obj = {
 let form_obj_to_html = function(obj) {
     let s = "";
     let v = 1;
-    s += "<hr><input type='text' name='' id='room_name' placeholder='Room Name'><br>";
-    s += "<input type='password' name='' id='room_password' placeholder='Room Password'><hr>"
+    let answers_txt_indx = 1;
+    s += "<hr><input type='text' name='room_name' id='room_name' placeholder='Room Name'><br>";
+    s += "<input type='password' name='room_password' id='room_password' placeholder='Room Password'><hr>"
     obj.questions.forEach(element => {
+        answers_txt_indx = 1;
         s += "<h3>" + element.question + "</h3>"; // Heading
-        s += "<textarea name='' id='question_text_" + v + "' cols='100' rows='1' placeholder='Question'></textarea>"; // Question
+        s += "<textarea name='q_" + v + "' id='question_text_" + v + "' cols='100' rows='1' placeholder='Question'></textarea>"; // Question
         element.answers.forEach(answer => {
-            s += "<textarea name='' id='answer_text' cols='100' rows='1' placeholder='Answeroption'></textarea>";
+            s += "<textarea name='q_" + v + "_a_" + answers_txt_indx + "' id='answer_text_ " + answers_txt_indx + "' cols='100' rows='1' placeholder='Answeroption'></textarea>";
+            answers_txt_indx++;
         });
         s += "<br><button type='button' class='btn btn-success' onClick='add_answer(this.id)' id='input_" + v + "'>+</button>";
         if (element.answers.length > 2) {
@@ -48,7 +51,6 @@ let add_answer = function(id) {
     index = parseInt(id.substring(6));
     let x = "Answer " + (parseInt(form_obj.questions[index - 1].answers.length) + 1);
     form_obj.questions[index - 1].answers.push(x);
-    // form_obj.questions.answers(index - 1).push("Answer " + form.obj.answers.length);
     document.getElementById("form-content").innerHTML = form_obj_to_html(form_obj);
 }
 

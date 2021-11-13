@@ -1,0 +1,3 @@
+Sobald man ein neues Antwort oder Fragenelement hinzufügt werden alle bereits beschrifteten Elemente gelöscht.
+- Vorerst alle Elemente die bereits Inhalt haben zwischenspeichern
+- Neue Elemente erstellen und mit Zwischenspeicherung befüllen

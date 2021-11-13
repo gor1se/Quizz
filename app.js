@@ -22,6 +22,7 @@ app.get('/new-room', (req, res) => {
 });
 
 app.post('/new-room', (req, res) => {
+    console.log("Send Data...");
     console.log(req.body);
     res.render('data_view', { name: req.body });
 });
