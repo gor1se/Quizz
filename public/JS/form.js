@@ -33,7 +33,12 @@ let form_obj_to_html = function(obj) {
         s += "<hr>";
         v++;
     });
-    s += "<button type='button' class='btn btn-success' onClick='add_question()'>Add Question</button><button class='btn btn-danger'>Remove Question</button><hr><button class='btn btn-success'>Create Room</button></hr>"
+    s += "<button type='button' class='btn btn-success' onClick='add_question()'>Add Question</button>";
+    if (obj.questions.length > 3) {
+        s += "<button class='btn btn-danger' type='button' onClick='remove_question()'>Remove Question</button><hr><button class='btn btn-success'>Create Room</button></hr>";
+    } else {
+        s += "<button class='btn btn-danger' type='button' onClick='remove_question()' disabled>Remove Question</button><hr><button class='btn btn-success'>Create Room</button></hr>";
+    }
     return s;
 }
 
@@ -59,5 +64,10 @@ let add_question = function() {
         question: "Question " + question_count,
         answers: ["Answer 1", "Answer 2"]
     });
+    document.getElementById("form-content").innerHTML = form_obj_to_html(form_obj);
+}
+
+let remove_question = function() {
+    form_obj.questions.pop();
     document.getElementById("form-content").innerHTML = form_obj_to_html(form_obj);
 }

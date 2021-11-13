@@ -3,11 +3,15 @@ let ejs = require('ejs');
 var jsdom = require('jsdom'); // Wird für JQuery benötigt
 const { red } = require('color-name');
 $ = require('jquery')(new jsdom.JSDOM().window);
+let bodyParser = require('body-parser');
+
 
 const port = 3000;
 const app = express();
 app.set('view engine', 'ejs');
 app.use('/public', express.static('public'))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -15,6 +19,11 @@ app.get('/', (req, res) => {
 
 app.get('/new-room', (req, res) => {
     res.render('new_room');
+});
+
+app.post('/new-room', (req, res) => {
+    console.log(req.body);
+    res.render('data_view', { name: req.body });
 });
 
 app.listen(port, () => {
