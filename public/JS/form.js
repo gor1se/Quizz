@@ -2,14 +2,14 @@ let form_obj = {
     name: "",
     password: "",
     questions: [{
-        question: "Question 1",
-        answers: ["Answer 1", "Answer 2"]
+        question: "",
+        answers: ["", ""]
     }, {
-        question: "Question 2",
-        answers: ["Answer 1", "Answer 2", "Answer 3"]
+        question: "",
+        answers: ["", "", ""]
     }, {
-        question: "Question 3",
-        answers: ["Answer 1", "Answer 2"]
+        question: "",
+        answers: ["", ""]
     }]
 }
 
@@ -22,9 +22,9 @@ let form_obj_to_html = function(obj) {
     obj.questions.forEach(element => {
         answers_txt_indx = 1;
         s += "<h3>Question" + v + "</h3>"; // Heading
-        s += "<textarea name='q_" + v + "' id='q_" + v + "' cols='100' rows='1' placeholder='Question'></textarea>"; // Question
+        s += "<textarea name='q_" + v + "' id='q_" + v + "' cols='100' rows='1' placeholder='Question'>" + element.question + "</textarea>"; // Question
         element.answers.forEach(answer => {
-            s += "<textarea name='q_" + v + "_a_" + answers_txt_indx + "' id='q_" + v + "_a_" + answers_txt_indx + "' cols='100' rows='1' placeholder='Answeroption'></textarea>";
+            s += "<textarea name='q_" + v + "_a_" + answers_txt_indx + "' id='q_" + v + "_a_" + answers_txt_indx + "' cols='100' rows='1' placeholder='Answeroption'>" + answer + "</textarea>";
             answers_txt_indx++;
         });
         s += "<br><button type='button' class='btn btn-success' onClick='add_answer(this.id)' id='input_" + v + "'>+</button>";
@@ -51,8 +51,7 @@ let add_answer = function(id) {
     // Überprüfe die Werte der eingegebenen Felder und speichere sie ab
     save_values();
     index = parseInt(id.substring(6));
-    let x = "Answer " + (parseInt(form_obj.questions[index - 1].answers.length) + 1);
-    form_obj.questions[index - 1].answers.push(x);
+    form_obj.questions[index - 1].answers.push("");
     document.getElementById("form-content").innerHTML = form_obj_to_html(form_obj);
     // Set Value am besten in der form_obj_to_html funktion
     document.getElementById("room_name").value = form_obj.name;
@@ -85,15 +84,21 @@ let save_values = function() {
     // Für jede Frage speichere die Frage ab 
     let question_count = 1;
     form_obj.questions.forEach(element => {
-        element.question = document.getElementById("q_" + question_count);
+        element.question = document.getElementById("q_" + question_count).value;
         // Hier folgt nächste forEach um die Antworten zu speichern
         let answer_count = 1;
         element.answers.forEach(answer => {
-            answer = document.getElementById("q_" + question_count + "_a_" + answer_count);
+            answer = document.getElementById("q_" + question_count + "_a_" + answer_count).value;
+            console.log(answer);
+            // Es werden auf jeden Fall die richtigen Antworten angesteuert
+            // answer speichert die Richtigen Werte, übergibt sie aber nicht an das Form_obj
+            form_obj.questions[0].answers[0] = answer;
             answer_count++;
-        })
+        });
         question_count++;
     });
+    // Problem: Die Answer_werte werden nicht abgespeichert. Es gibt nur leere Elemente.
+    console.log(form_obj.questions[0].answers);
     // Überprüfen ob das Objekt richtig abgespeichert wird!
     //console.log(form_obj.questions.question[0]);
     // Für jede Antwort auf die Frage speichere die Antwort ab
