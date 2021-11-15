@@ -64,10 +64,11 @@ let remove_answer = function(id) {
 }
 
 let add_question = function() {
+    save_values();
     let question_count = form_obj.questions.length + 1;
     form_obj.questions.push({
-        question: "Question " + question_count,
-        answers: ["Answer 1", "Answer 2"]
+        question: "",
+        answers: ["", ""]
     });
     document.getElementById("form-content").innerHTML = form_obj_to_html(form_obj);
 }
@@ -89,17 +90,9 @@ let save_values = function() {
         let answer_count = 1;
         element.answers.forEach(answer => {
             answer = document.getElementById("q_" + question_count + "_a_" + answer_count).value;
-            console.log(answer);
-            // Es werden auf jeden Fall die richtigen Antworten angesteuert
-            // answer speichert die Richtigen Werte, übergibt sie aber nicht an das Form_obj
-            form_obj.questions[0].answers[0] = answer;
+            element.answers[answer_count - 1] = answer;
             answer_count++;
         });
         question_count++;
     });
-    // Problem: Die Answer_werte werden nicht abgespeichert. Es gibt nur leere Elemente.
-    console.log(form_obj.questions[0].answers);
-    // Überprüfen ob das Objekt richtig abgespeichert wird!
-    //console.log(form_obj.questions.question[0]);
-    // Für jede Antwort auf die Frage speichere die Antwort ab
 }

@@ -5,6 +5,11 @@ const { red } = require('color-name');
 $ = require('jquery')(new jsdom.JSDOM().window);
 let bodyParser = require('body-parser');
 
+// Filehandling:
+let fs = require('fs');
+
+
+
 
 const port = 3000;
 const app = express();
@@ -24,6 +29,16 @@ app.get('/new-room', (req, res) => {
 app.post('/new-room', (req, res) => {
     console.log("Send Data...");
     console.log(req.body);
+    // Hier folgt das Filehandling vorerst in TXT oder JSON - später Datenbank
+    // fs.open('/datatt.txt', 'w', function(err, file) {
+    //     if (err) throw err;
+    //     // fs.appendFile('/data.txt', String(req.body), function(err) {
+    //     //     if (err) throw err;
+    //     //     console.log('Saved!');
+    //     // });
+    //     console.log('Saved!');
+    // });
+
     res.render('data_view', { name: req.body });
 });
 

@@ -1,0 +1,12 @@
+Als nächstes sollte die Serverseitige Datenverarbeitung programmiert werden.
+Außerdem fehlen der New-Room Seite noch einige Features. Beispielsweise das CSS und beim Form einige Datenfelder.
+Bei der nächsten Session möchte ich erreichen, dass die erstellten Räume irgendwo Zentral abgespeichert werden.
+
+Der nächste Schritt wäre dann die Quizzfunktionalität umzuschreiben, sodass einzelne Quizzes aufgerufen und gestartet werden können.
+Die Idee ist den Quizzraum in einer Datenbank zu suchen.
+Falls ein Passwort vorhanden wird die Eingabe abgefragt.
+Danch kommt man in den quizzraum, bei dem es Folgende Optionen gibt:
+- Quiz starten (Anzahl an maximalen Quizzkarten kann eingegeben werden)
+- Karten hinzufügen
+- Karten Revieweinstellungen
+- Evtl. soll noch für Admins ein "alle Karten bearbeiten" modus hinzugefügt werden
