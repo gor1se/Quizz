@@ -6,7 +6,16 @@ $ = require('jquery')(new jsdom.JSDOM().window);
 let bodyParser = require('body-parser');
 
 // Filehandling:
-let fs = require('fs');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://admin-duck:DuckDuckDuck@quizz.lwrql.mongodb.net/Quizz', { useNewUrlParser: true });
+// Mongoose Schema
+// Gibt Struktur des Datensatzes vor
+const room_scheme = new mongoose.Schema({
+    name: String,
+    password: String
+});
+// Mongoose Model
+const Room = mongoose.model("Room", room_scheme);
 
 
 
@@ -29,6 +38,24 @@ app.get('/new-room', (req, res) => {
 app.post('/new-room', (req, res) => {
     console.log("Send Data...");
     console.log(req.body);
+    console.log("Name des Raums: " + req.body.room_name);
+
+    // const room = new Room({
+    //     name: req.body.room_name,
+    //     password: req.body.room_password
+    // });
+    // room.save();
+    Room.find(function(err, rooms) {
+        if (err) {
+            console.log("FEHLER" + err);
+        } else {
+            console.log("INHALT" + rooms);
+        }
+    });
+    // obj.newContent = req.body;
+    // fs.writeFile('data.json', JSON.stringify(obj), function(err) {
+    //     console.log(err);
+    // });
     // Hier folgt das Filehandling vorerst in TXT oder JSON - später Datenbank
     // fs.open('/datatt.txt', 'w', function(err, file) {
     //     if (err) throw err;
