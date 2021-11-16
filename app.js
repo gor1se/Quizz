@@ -69,6 +69,29 @@ app.post('/new-room', (req, res) => {
     res.render('data_view', { name: req.body });
 });
 
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.post('/login', (req, res) => {
+    // Verification of User
+    console.log("Successfully logged in!");
+    console.log("Name: " + req.body.user_name);
+    console.log("Password: " + req.body.user_password);
+});
+
+app.post('/register', (req, res) => {
+    // Registration of User
+    console.log("Successfully registered!");
+    console.log("Name: " + req.body.user_name);
+    console.log("Email: " + req.body.user_email);
+    console.log("Password: " + req.body.user_password);
+});
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 });

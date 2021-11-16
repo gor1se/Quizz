@@ -1,0 +1,14 @@
+<%- include('header'); -%>
+
+    <h1>Login</h1>
+    <p>Please Enter a valid Username and Password.</p>
+    <form action="/login" method="post">
+        <input type="text" name="user_name" id="" placeholder="Username">
+        <br>
+        <input type="password" name="user_password" id="" placeholder="Password">
+        <br>
+        <button class="btn btn-success" type="submit" name="enter_form">Login</button>
+    </form>
+    <p>Not registered yet? Click <a href="/register">here</a> to set up a new account.</p>
+
+    <%- include('footer'); -%>
