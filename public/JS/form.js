@@ -25,6 +25,7 @@ let form_obj_to_html = function(obj) {
         s += "<textarea name='q_" + v + "' id='q_" + v + "' cols='100' rows='1' placeholder='Question'>" + element.question + "</textarea>"; // Question
         element.answers.forEach(answer => {
             s += "<textarea name='q_" + v + "_a_" + answers_txt_indx + "' id='q_" + v + "_a_" + answers_txt_indx + "' cols='100' rows='1' placeholder='Answeroption'>" + answer + "</textarea>";
+            s += "<input type='checkbox' name='q_" + v + "_a_" + answers_txt_indx + "_c" + "'>"
             answers_txt_indx++;
         });
         s += "<br><button type='button' class='btn btn-success' onClick='add_answer(this.id)' id='input_" + v + "'>+</button>";
