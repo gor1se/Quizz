@@ -9,3 +9,11 @@ input {
 button {
     margin: .8rem;
 }
+
+.alert-box {
+    background-color: #Faa;
+    font-weight: bold;
+    max-width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -86,7 +86,8 @@ app.post('/new-room', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.render('login');
+    let alert = "";
+    res.render('login', { alert: alert });
 });
 
 app.get('/register', (req, res) => {
@@ -94,20 +95,25 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
+    // Verification of Input Data
+    if (req.body.user_name == "" || req.body.user_password == "") {
+        let alert = "Error: Username or Password is empty";
+        res.render('login', { alert: alert });
+        console.log("ein feld ist leer");
+    }
+
     // Verification of User
-    User.find(function(err, users) {
-        if (err) {
-            console.log("FEHLER" + err);
+    User.findOne({ name: req.body.user_name }, (error, data) => {
+        if (error) {
+            console.log(error);
         } else {
-            console.log("INHALT" + users);
-            users.forEach(function(user) {
-                console.log(user.name);
-            });
-        };
+            if (data == null || data.password != req.body.user_password) {
+                console.log("Fehler beim Login!");
+            } else {
+                console.log("Login erfolgreich!");
+            }
+        }
     });
-    console.log("Successfully logged in!");
-    console.log("Name: " + req.body.user_name);
-    console.log("Password: " + req.body.user_password);
 });
 
 app.post('/register', (req, res) => {
@@ -117,22 +123,19 @@ app.post('/register', (req, res) => {
         email: req.body.user_email,
         password: req.body.user_password
     });
-    user.save();
-    // Vergleich funktioniert nicht, kann nicht auf dataeigenschaften zugreifen
     User.findOne({ name: req.body.user_name }, (error, data) => {
         if (error) {
             console.log(error);
         } else {
-            if (data["name"] == req.body.user_name) {
-                console.log("Username is already taken");
-            } else {
+            if (data == null || data.name != req.body.user_name) {
+                console.log("User " + req.body.user_name + " wird angelegt!");
                 user.save();
-                console.log("Successfully registered!");
+            } else {
+                console.log("User " + req.body.user_name + " existiert bereits!");
             }
-            //console.log(data);
-
         }
-    })
+    });
+
 });
 
 app.listen(port, () => {
