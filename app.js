@@ -91,15 +91,16 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-    res.render('register');
+    let alert = "";
+    res.render('register', { alert: alert });
 });
 
 app.post('/login', (req, res) => {
     // Verification of Input Data
+    let alert = "";
     if (req.body.user_name == "" || req.body.user_password == "") {
-        let alert = "Error: Username or Password is empty";
-        res.render('login', { alert: alert });
-        console.log("ein feld ist leer");
+        alert = "Error: Username or Password is empty";
+        return res.render('login', { alert: alert });
     }
 
     // Verification of User
@@ -108,6 +109,8 @@ app.post('/login', (req, res) => {
             console.log(error);
         } else {
             if (data == null || data.password != req.body.user_password) {
+                alert = "Error: Username or Password is wrong";
+                res.render('login', { alert: alert });
                 console.log("Fehler beim Login!");
             } else {
                 console.log("Login erfolgreich!");
@@ -117,25 +120,60 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
+    // Verification of Input Data
+    let alert = "";
+    if (req.body.user_name == "" || req.body.user_email == "" || req.body.user_password == "" || req.body.user_password_check == "") {
+        alert = "Error: Please Enter Data in all of the Fields!";
+        return res.render('register', { alert: alert });
+    } else if (req.body.user_password.length < 6) {
+        alert = "Error: Your Password must be at least 6 characters long!";
+        return res.render('register', { alert: alert });
+    } else if (req.body.user_password_check != req.body.user_password) {
+        alert = "Error: Your Passwords need to match!";
+        return res.render('register', { alert: alert });
+    }
     // Registration of User
+    // Check if Username is already used
+    // Check if EMail is already used
     const user = new User({
         name: req.body.user_name,
         email: req.body.user_email,
         password: req.body.user_password
     });
+
+    let email_found = true;
+    let username_found = true;
+
+    User.findOne({ email: req.body.user_email }, (error, data) => {
+        if (error) {
+            console.log(error);
+        } else {
+            if (data == null) {
+                email_found = !email_found;
+            } else {
+                alert = "Email Found";
+                return res.render('register', { alert: alert });
+            }
+        }
+    });
     User.findOne({ name: req.body.user_name }, (error, data) => {
         if (error) {
             console.log(error);
         } else {
-            if (data == null || data.name != req.body.user_name) {
-                console.log("User " + req.body.user_name + " wird angelegt!");
-                user.save();
+            if (data == null) {
+                username_found = false;
             } else {
-                console.log("User " + req.body.user_name + " existiert bereits!");
+                alert = "Username Found";
+                return res.render('register', { alert: alert });
             }
         }
     });
-
+    // Verzögere die folgende Methode, da aufgrund der Callbackfunktion in den findOne Methoden sonst die Werte nicht korrekt überprüft werden
+    setTimeout(() => {
+        if (!email_found && !username_found) {
+            user.save();
+        }
+    }, 1000);
 });
 
 app.listen(port, () => {
