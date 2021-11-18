@@ -39,3 +39,6 @@ und welche nicht. Auch eine spaced repetition könnte man so umsetzen.
 5. Datenstruktur 
 Die Datenstruktur der Datenbank sieht folgendermaßen aus:
 Data(Object)->QuestionBlock(Object)->Questions(Array)->Question(Object)
+
+Die Räume sollen später auch ein Rating bekommen und von Usern bewertet werden können.
+Hierzu wird natürlich hinterlegt, welcher User welchen Raum bereits bewertet hat.

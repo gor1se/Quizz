@@ -10,3 +10,12 @@ Danch kommt man in den quizzraum, bei dem es Folgende Optionen gibt:
 - Karten hinzufügen
 - Karten Revieweinstellungen
 - Evtl. soll noch für Admins ein "alle Karten bearbeiten" modus hinzugefügt werden
+
+ALS NÄCHSTES:
+Jetzt sollen die verschiedenen Quizzräume hinzugefügt werden.
+Zuerst kommt man auf eine Quizzraum login Seite.
+Sobald man eingelogged ist hat man zugriff auf drei verschiedene Seiten im eigentlichen Quizzraum:
+1. Quizz machen
+2. Fragen reviewen 
+3. Karten hinzufügen 
+All diese Features werden über die EJS Templates umgesetzt womit jede dieser Raumseiten nur ein einziges mal programmiert wird.

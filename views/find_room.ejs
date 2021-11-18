@@ -1,0 +1,38 @@
+<%- include('header'); -%>
+    <h1>Suchen und finden sie Räume</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Anzahl Fragen</th>
+                <th scope="col">Anzahl User</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Beitreten</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(date in data){ %>
+                <tr>
+                    <th scope="row">
+                        <%=Number(date)+1%>
+                    </th>
+                    <th>
+                        <%=data[date].name%>
+                    </th>
+                    <th>
+                        <%=data[date].questions.length%>
+                    </th>
+                    <th>
+                        <%=data[date].users_of_room.length%>
+                    </th>
+                    <th>comming soon</th>
+                    <th>
+                        <a class="btn btn-success">Beitreten</a>
+                    </th>
+                </tr>
+                <% } %>
+        </tbody>
+    </table>
+
+    <%- include('footer'); -%>

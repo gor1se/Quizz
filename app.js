@@ -10,6 +10,18 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/Quizz', { useNewUrlParser: true });
 // Mongoose Schema
 // Gibt Struktur des Datensatzes vor
+
+const question_scheme = new mongoose.Schema({
+    question: String,
+    answers: [String],
+    reviews_positive: Number,
+    reviews_negative: Number,
+    reviewed_by: Array,
+    active: Boolean
+});
+
+const Question = mongoose.model("Question", question_scheme);
+
 const room_scheme = new mongoose.Schema({
     name: String,
     password: String,
@@ -20,18 +32,12 @@ const room_scheme = new mongoose.Schema({
     answered_questions_in_room: Number,
     creater_of_room: String,
     users_of_room: Array,
-    questions: Array
-        // In dem questions Array werden Objecte mit folgender Struktur gespeicher:
-        // question of questions: {
-        //     question: String,
-        //     Answers: Array,                  // Correct Answers
-        //     reviews_positive: Number,        // Reviewcount
-        //     reviews_negative: Number,
-        //     active: Boolean                  // Erst false und nach dem die Reviewoptionen erfüllt sind wird der Wert positiv und kann in einem Quizz auftauchen 
-        // }
+    questions: [question_scheme]
 });
 // Mongoose Model
 const Room = mongoose.model("Room", room_scheme);
+
+
 
 // Mongoose für Registrierung
 const registration_scheme = new mongoose.Schema({
@@ -72,47 +78,68 @@ app.get('/new-room', (req, res) => {
 });
 
 app.post('/new-room', (req, res) => {
-    console.log("Send Data...");
-    console.log(req.body);
-    console.log("Name des Raums: " + req.body.room_name);
-    let questions_array = [];
-    let q = 1;
-    // Check if q_n existiert
-    if ('q_' + q in req.body) {
-        let s = 'q_' + q;
-        let a = 1;
-        // füge Frage hinzu (Ganzes Object erstellen)
-        questions_array.push({
-            question: req.body.s,
-            answers: []
-        });
-        if ('q_' + q + '_a_' + a in req.body) {
-            let sa = 'q_' + q + '_a_' + a;
-            questions_array[0].answers.push(req.body.sa);
+    // Check input data
+
+    // Server Logic
+    let schema_array = [];
+    let obj_length = Object.keys(req.body).length;
+    for (let i = 1; i < obj_length; i++) {
+        if ('q_' + i in req.body) {
+            const question = new Question({
+                question: "",
+                answers: [],
+                reviews_positive: Number,
+                reviews_negative: Number,
+                reviewed_by: [Array],
+                active: Boolean
+            });
+            let s = 'q_' + i;
+            for (let j = 1; j < (obj_length / 2); j++) {
+                // Werte eigentlich egal, da durch break statement abgebrochen wird.
+                if ('q_' + i + '_a_' + j in req.body) {
+                    question.answers.push(req.body['q_' + i + '_a_' + j]);
+                } else {
+                    break;
+                }
+
+            }
+            question.reviews_positive = 0;
+            question.reviews_negative = 0;
+            question.reviewed_by = [];
+            question.active = true;
+            question.question = req.body['q_' + i];
+            schema_array.push(question);
+        } else {
+            break;
         }
     }
-    // Wenn ja dann füge alle Antworten hinzu
-    // Check if q_n_a_j existiert
-
-    // Wenn ja, füge antwort in Antwortarray hinzu
-
-    // Wenn nein, beende schleife und erhöhe q um 1
-
+    let alert = "";
     const room = new Room({
         name: req.body.room_name,
         password: req.body.room_password,
-        questions: questions_array
-    });
-    room.save();
-    Room.find(function(err, rooms) {
-        if (err) {
-            console.log("FEHLER" + err);
-        } else {
-            console.log("INHALT" + rooms);
-        }
+        private: false,
+        positive_reviews_neccessary: 2,
+        positive_reviews_neccessary_percentage: .5,
+        only_admins_can_add_and_review: false,
+        answered_questions_in_room: 0,
+        creater_of_room: current_user.name,
+        users_of_room: [current_user.name],
+        questions: schema_array
     });
 
+    room.save();
+
     res.render('data_view', { name: req.body, current_user_name: current_user.name });
+});
+
+app.get('/find-room', (req, res) => {
+    Room.find((error, data) => {
+        if (error) {
+            console.log(error);
+        } else {
+            res.render('find_room', { current_user_name: current_user.name, data: data });
+        }
+    })
 });
 
 app.get('/login', (req, res) => {
