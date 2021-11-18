@@ -4,6 +4,7 @@ var jsdom = require('jsdom'); // Wird für JQuery benötigt
 const { red } = require('color-name');
 $ = require('jquery')(new jsdom.JSDOM().window);
 let bodyParser = require('body-parser');
+let _ = require('lodash');
 
 // Filehandling:
 const mongoose = require('mongoose');
@@ -140,6 +141,23 @@ app.get('/find-room', (req, res) => {
             res.render('find_room', { current_user_name: current_user.name, data: data });
         }
     })
+});
+
+app.get('/rooms/:room', function(req, res) {
+    let requested_href = req.params.room;
+    let rooms;
+    Room.find((error, data) => {
+        if (error) {
+            console.log(error);
+        } else {
+            rooms = data;
+            for (item in data) {
+                if (requested_href == data[item].name) {
+                    res.render('room', { current_user_name: current_user.name, text: data[item].name });
+                }
+            }
+        }
+    });
 });
 
 app.get('/login', (req, res) => {

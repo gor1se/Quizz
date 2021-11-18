@@ -19,3 +19,44 @@ Sobald man eingelogged ist hat man zugriff auf drei verschiedene Seiten im eigen
 2. Fragen reviewen 
 3. Karten hinzufügen 
 All diese Features werden über die EJS Templates umgesetzt womit jede dieser Raumseiten nur ein einziges mal programmiert wird.
+
+Aufbau eines Quizz Raums:
+
+Startseite:
+Angezeigt wird:
+Raum Name und ein Feld bei dem ein Passwort eingegeben werden soll.
+Zudem wird eine normalerweise leere Alertbox hinzugefügt
+Nach Eingabe des Passworts wird entweder die gleiche Seite nochmal angezeigt und das Passwort nochmal angefordert (Bei falscher Eingabe).
+Sollte man bereits ein User des Raums sein benötigt man das Passwort nicht einzugeben.
+Ansonsten kommt man auf die Hauptseite.
+
+Hauptseite:
+Oben wird eine Laufleiste angezeigt, welche aus drei Elementen besteht die alle Klickbar sind.
+Links: Füge eine Frage hinzu
+Mitte: Starte das Quizz
+Rechts: Reviewe offene Fragen
+
+Links:   Hier bekommt man einen kleinen Teil der Create Room Forms angezeigt, bei dem man eine einzige Frage hinzufügen kann.
+         Sobald man damit fertig ist wird man auf die gleiche Seite nochmal geschickt um eine weitere hinzufügen zu können.
+
+Mitte:   Hier gibt es einen Slider, bei dem Eingestellt werden kann wieviele Fragen man beantworten möchte.
+         Der Slider zeigt Maximal die Maximalen Quizzfragen an.
+         Es werden nur Quizzfragen hinzugefügt welche AKTTIV sind
+         Neben den Slider gibt es noch einen Bestätigenbutton um das Quizz zu starten.
+         Sobald das Quizz gestartet wird funktioniert es exakt wie bei dem Quizz was aktuell auf der Homeseite liegt.
+         Einige kleine Anpassungen sind noch zu machen.
+
+Rechts:  Hier werden alle Fragen aufgelistet, welche noch nicht aktiv sind und welche man noch nicht reviewed hat.
+         Bei jeder Frage gibt es einen Positiv- und einen Negativknopf.
+         Sobald man eine Frage bewertet hat, wird man wieder zur gleichen Seite geleitet.
+         Allerdings passiert folgendes:
+         - Man hat die Frage jetzt reviewed, damit kann man die Frage nicht nochmal bewerten.
+         - Die Fragen überprüfen nach einer Bewertung ob sie jetzt aktiv geschalten werden sollen. Sie überprüfen das anhand der Raumoptionen.
+        
+Die Post Methode: Hier wird ein Laufindex verwendet um zu erkennen, ob man sich am LoginScreen, Links in der Mitte oder Rechts befindet.
+Mit einer einfachen If else abfrage wird dann geprüft welche Aktion ausgeführt werden soll.
+Beispiel:
+room_status = ["login", "review_questions", "add_question", "start_quizz", "finish_quizz"];
+
+In welcher Phase und in welchem Raum ein User gerade ist sollte auf dem Server gespeicher werden, am besten unter current_user.
+Attribute müssen noch zum Object hinzugefügt werden. Am besten current_room und current_room_status.
