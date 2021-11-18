@@ -24,6 +24,7 @@ Hier soll in der Navigationsleite angezeigt werden, ob ein User angemeldet ist o
 Um einen Raum betreten zu können muss der User angemeldet sein.
 In der Navleiste soll das Wort "Login" durch den Usernamen ausgetauscht werden.
 Wenn man darauf klickt wird man an den Profile View weitergeleitet, bei dem die Daten eines User angezeigt werden.
+Bei jedem res.render werden die Userinformationen mitgegeben!
 
 Daten eines Users:
 
@@ -56,3 +57,5 @@ Raum {
         active: Boolean                  // Erst false und nach dem die Reviewoptionen erfüllt sind wird der Wert positiv und kann in einem Quizz auftauchen 
     }
 }
+
+Für die erste Version wird immer davon ausgegangen, dass die Erste antwort die beim Quizz gegeben wird die richtige ist.

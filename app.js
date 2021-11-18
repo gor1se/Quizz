@@ -13,7 +13,22 @@ mongoose.connect('mongodb://localhost:27017/Quizz', { useNewUrlParser: true });
 const room_scheme = new mongoose.Schema({
     name: String,
     password: String,
+    private: Boolean,
+    positive_reviews_neccessary: Number,
+    positive_reviews_neccessary_percentage: Number,
+    only_admins_can_add_and_review: Boolean,
+    answered_questions_in_room: Number,
+    creater_of_room: String,
+    users_of_room: Array,
     questions: Array
+        // In dem questions Array werden Objecte mit folgender Struktur gespeicher:
+        // question of questions: {
+        //     question: String,
+        //     Answers: Array,                  // Correct Answers
+        //     reviews_positive: Number,        // Reviewcount
+        //     reviews_negative: Number,
+        //     active: Boolean                  // Erst false und nach dem die Reviewoptionen erfüllt sind wird der Wert positiv und kann in einem Quizz auftauchen 
+        // }
 });
 // Mongoose Model
 const Room = mongoose.model("Room", room_scheme);
@@ -22,8 +37,13 @@ const Room = mongoose.model("Room", room_scheme);
 const registration_scheme = new mongoose.Schema({
     name: String,
     email: String,
-    password: String
+    password: String,
+    logged_in: Boolean,
+    veryfied: Boolean,
+    questions_answered: Number,
+    rooms: Array
 });
+
 const User = mongoose.model("User", registration_scheme);
 
 const port = 3000;
@@ -33,12 +53,22 @@ app.use('/public', express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Set current User for Login
+let current_user = {
+    logged_in: false,
+    name: "Login",
+    passwort: "",
+    email: "",
+    veryfied: false,
+    questions_answered: 0
+}
+
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', { current_user_name: current_user.name });
 });
 
 app.get('/new-room', (req, res) => {
-    res.render('new_room');
+    res.render('new_room', { current_user_name: current_user.name });
 });
 
 app.post('/new-room', (req, res) => {
@@ -82,17 +112,21 @@ app.post('/new-room', (req, res) => {
         }
     });
 
-    res.render('data_view', { name: req.body });
+    res.render('data_view', { name: req.body, current_user_name: current_user.name });
 });
 
 app.get('/login', (req, res) => {
     let alert = "";
-    res.render('login', { alert: alert });
+    res.render('login', { alert: alert, current_user_name: current_user.name });
 });
 
 app.get('/register', (req, res) => {
     let alert = "";
-    res.render('register', { alert: alert });
+    res.render('register', { alert: alert, current_user_name: current_user.name });
+});
+
+app.get('/profile', (req, res) => {
+    res.render('profile', { current_user_name: current_user.name });
 });
 
 app.post('/login', (req, res) => {
@@ -100,7 +134,7 @@ app.post('/login', (req, res) => {
     let alert = "";
     if (req.body.user_name == "" || req.body.user_password == "") {
         alert = "Error: Username or Password is empty";
-        return res.render('login', { alert: alert });
+        return res.render('login', { alert: alert, current_user_name: current_user.name });
     }
 
     // Verification of User
@@ -110,9 +144,12 @@ app.post('/login', (req, res) => {
         } else {
             if (data == null || data.password != req.body.user_password) {
                 alert = "Error: Username or Password is wrong";
-                res.render('login', { alert: alert });
+                res.render('login', { alert: alert, current_user_name: current_user.name });
                 console.log("Fehler beim Login!");
             } else {
+                // Hier sollten alle Daten geändert werden, nicht nur der Username!
+                current_user.name = data.name;
+                res.render('profile', { current_user_name: current_user.name });
                 console.log("Login erfolgreich!");
             }
         }
@@ -124,13 +161,13 @@ app.post('/register', (req, res) => {
     let alert = "";
     if (req.body.user_name == "" || req.body.user_email == "" || req.body.user_password == "" || req.body.user_password_check == "") {
         alert = "Error: Please Enter Data in all of the Fields!";
-        return res.render('register', { alert: alert });
+        return res.render('register', { alert: alert, current_user_name: current_user.name });
     } else if (req.body.user_password.length < 6) {
         alert = "Error: Your Password must be at least 6 characters long!";
-        return res.render('register', { alert: alert });
+        return res.render('register', { alert: alert, current_user_name: current_user.name });
     } else if (req.body.user_password_check != req.body.user_password) {
         alert = "Error: Your Passwords need to match!";
-        return res.render('register', { alert: alert });
+        return res.render('register', { alert: alert, current_user_name: current_user.name });
     }
     // Registration of User
     // Check if Username is already used
@@ -138,7 +175,11 @@ app.post('/register', (req, res) => {
     const user = new User({
         name: req.body.user_name,
         email: req.body.user_email,
-        password: req.body.user_password
+        password: req.body.user_password,
+        looged_in: false,
+        veryfied: false,
+        questions_answered: 0,
+        rooms: []
     });
 
     let email_found = true;
@@ -152,7 +193,7 @@ app.post('/register', (req, res) => {
                 email_found = !email_found;
             } else {
                 alert = "Email Found";
-                return res.render('register', { alert: alert });
+                return res.render('register', { alert: alert, current_user_name: current_user.name });
             }
         }
     });
@@ -164,7 +205,7 @@ app.post('/register', (req, res) => {
                 username_found = false;
             } else {
                 alert = "Username Found";
-                return res.render('register', { alert: alert });
+                return res.render('register', { alert: alert, current_user_name: current_user.name });
             }
         }
     });
@@ -172,6 +213,7 @@ app.post('/register', (req, res) => {
     setTimeout(() => {
         if (!email_found && !username_found) {
             user.save();
+            res.render('login', { alert: alert, current_user_name: current_user.name });
         }
     }, 1000);
 });
