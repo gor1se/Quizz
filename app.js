@@ -53,10 +53,14 @@ const registration_scheme = new mongoose.Schema({
 
 const User = mongoose.model("User", registration_scheme);
 
+const status_options = ["not_logged_in", "new_to_room", "review_question", "add_question", "start_quizz", "finish_quizz"];
+
 const port = 3000;
 const app = express();
 app.set('view engine', 'ejs');
-app.use('/public', express.static('public'))
+//app.use('public', express.static('public'));
+app.use(express.static("public"));
+//app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -67,7 +71,8 @@ let current_user = {
     passwort: "",
     email: "",
     veryfied: false,
-    questions_answered: 0
+    questions_answered: 0,
+    status: String
 }
 
 app.get('/', (req, res) => {
@@ -143,21 +148,47 @@ app.get('/find-room', (req, res) => {
     })
 });
 
-app.get('/rooms/:room', function(req, res) {
+app.get('/rooms/:room', (req, res) => {
     let requested_href = req.params.room;
     let rooms;
-    Room.find((error, data) => {
-        if (error) {
-            console.log(error);
-        } else {
-            rooms = data;
-            for (item in data) {
-                if (requested_href == data[item].name) {
-                    res.render('room', { current_user_name: current_user.name, text: data[item].name });
+    // Check current Login state:
+    res.render('room', { current_user_name: current_user.name, current_user_status: current_user.status });
+    if (current_user.name == "Login") {
+        current_user.status = status_options[0];
+        console.log("Please login first!");
+        res.render('room', { current_user_name: current_user.name, current_user_status: current_user.status });
+    } else {
+        // Checke ob der User diesen Raum schon einmal betreten hat...
+        Room.find({ name: requested_href }, (error, data) => {
+            if (error) {
+                console.log(error);
+            } else if (data != null) {
+                console.log(data);
+                // Hier ist ein Raum bei dem der User bereits Mitglied ist
+                if (data[0].users_of_room.indexOf(current_user.name) != -1) {
+                    console.log("Bereits Mitglied");
+                    current_user.status = status_options[4];
+                    res.render('room', { current_user_name: current_user.name, current_user_status: current_user.status, data: data });
+                } else {
+                    console.log("Eingelogged aber ein Neues Mitglied");
+                    current_user.status = status_options[1];
                 }
             }
-        }
-    });
+        });
+    };
+
+    // Room.find((error, data) => {
+    //     if (error) {
+    //         console.log(error);
+    //     } else {
+    //         rooms = data;
+    //         for (item in data) {
+    //             if (requested_href == data[item].name) {
+    //                 res.render('room', { current_user_name: current_user.name, text: data[item].name });
+    //             }
+    //         }
+    //     }
+    // });
 });
 
 app.get('/login', (req, res) => {

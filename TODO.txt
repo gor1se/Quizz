@@ -60,3 +60,11 @@ room_status = ["login", "review_questions", "add_question", "start_quizz", "fini
 
 In welcher Phase und in welchem Raum ein User gerade ist sollte auf dem Server gespeicher werden, am besten unter current_user.
 Attribute müssen noch zum Object hinzugefügt werden. Am besten current_room und current_room_status.
+
+Checkpunkte:
+Sobald diese Dinge Funktionieren bin ich morgen dankbar und zufrieden:
+- Anmeldung in einen Frageraum
+- Durchswitchen der drei verschiedenen Funktionen 
+- Hinzufügen einer Frage 
+- Review einer Frage 
+- Start eines Quizz inkl. Funktionsweise

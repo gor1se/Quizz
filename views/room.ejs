@@ -1,3 +1,35 @@
 <%- include('header'); -%>
-    <%= text %>
-        <%- include('footer'); -%>
+
+    <!-- EVTL mit Internal CSS versuchen -->
+    <!-- <style>
+        .slider-div {
+            background-color: #a44;
+            width: 15%;
+            height: 3rem;
+            display: inline-block;
+        }
+    </style> -->
+    <!-- Noch nicht eingelogged -->
+    <%if (current_user_status == "not_logged_in"){%>
+        <h3>Please log in first!</h3>
+        <a href="/login" class="btn btn-success">Login</a>
+        <%}%>
+
+            <!-- Eingelogged, aber noch kein Raummitglied -->
+
+
+            <!-- Eingelogged und ein Raummitglied -->
+
+            <%if (current_user_status == "start_quizz"){%>
+                <h3>Herzlich Wilkommen!</h3>
+                <h4>Raum:
+                    <%=data[0].name%>
+                </h4>
+                <br>
+
+                <div class="slider-div">Add Questions</div>
+                <div class="slider-div">Start Quiz</div>
+                <div class="slider-div">Review Questions</div>
+                <%}%>
+
+                    <%- include('footer'); -%>
