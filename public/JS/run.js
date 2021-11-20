@@ -96,7 +96,7 @@ function reply_click(clicked_id) {
     }
 }
 
-let question_html = function(qst) {
+let question_html = qst => {
     let s = "";
     let answer_id = 1;
     s += "<h4>Frage: ";
