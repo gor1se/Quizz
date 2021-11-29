@@ -155,7 +155,6 @@ app.get('/rooms/:room', (req, res) => {
     res.render('room', { current_user_name: current_user.name, current_user_status: current_user.status });
     if (current_user.name == "Login") {
         current_user.status = status_options[0];
-        console.log("Please login first!");
         res.render('room', { current_user_name: current_user.name, current_user_status: current_user.status });
     } else {
         // Checke ob der User diesen Raum schon einmal betreten hat...
@@ -163,32 +162,16 @@ app.get('/rooms/:room', (req, res) => {
             if (error) {
                 console.log(error);
             } else if (data != null) {
-                console.log(data);
                 // Hier ist ein Raum bei dem der User bereits Mitglied ist
                 if (data[0].users_of_room.indexOf(current_user.name) != -1) {
-                    console.log("Bereits Mitglied");
                     current_user.status = status_options[4];
                     res.render('room', { current_user_name: current_user.name, current_user_status: current_user.status, data: data });
                 } else {
-                    console.log("Eingelogged aber ein Neues Mitglied");
                     current_user.status = status_options[1];
                 }
             }
         });
     };
-
-    // Room.find((error, data) => {
-    //     if (error) {
-    //         console.log(error);
-    //     } else {
-    //         rooms = data;
-    //         for (item in data) {
-    //             if (requested_href == data[item].name) {
-    //                 res.render('room', { current_user_name: current_user.name, text: data[item].name });
-    //             }
-    //         }
-    //     }
-    // });
 });
 
 app.get('/login', (req, res) => {
@@ -221,12 +204,10 @@ app.post('/login', (req, res) => {
             if (data == null || data.password != req.body.user_password) {
                 alert = "Error: Username or Password is wrong";
                 res.render('login', { alert: alert, current_user_name: current_user.name });
-                console.log("Fehler beim Login!");
             } else {
                 // Hier sollten alle Daten geändert werden, nicht nur der Username!
                 current_user.name = data.name;
                 res.render('profile', { current_user_name: current_user.name });
-                console.log("Login erfolgreich!");
             }
         }
     });
